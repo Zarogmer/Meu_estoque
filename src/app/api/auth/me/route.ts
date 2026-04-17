@@ -29,6 +29,9 @@ export async function GET() {
         lojaId: usuarios.lojaId,
         role: usuarios.role,
         nomeLoja: lojas.nome,
+        telefone: usuarios.telefone,
+        whatsapp: usuarios.whatsapp,
+        instagram: usuarios.instagram,
       })
       .from(usuarios)
       .leftJoin(lojas, eq(lojas.id, usuarios.lojaId))
@@ -47,6 +50,9 @@ export async function GET() {
         lojaId: user.lojaId,
         nomeLoja: user.nomeLoja,
         role: user.role,
+        telefone: user.telefone ?? '',
+        whatsapp: user.whatsapp ?? '',
+        instagram: user.instagram ?? '',
       },
     });
   } catch (error) {

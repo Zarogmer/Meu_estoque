@@ -11,6 +11,9 @@ interface User {
   lojaId: number | null;
   nomeLoja: string | null;
   role: UserRole;
+  telefone?: string;
+  whatsapp?: string;
+  instagram?: string;
 }
 
 export function useAuth() {
@@ -99,6 +102,19 @@ export function useAuth() {
     return res;
   }, [router]);
 
+  // Re-fetch current user from server. Useful after profile edits.
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/me', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      }
+    } catch {
+      // ignore — caller can react to the unchanged state
+    }
+  }, []);
+
   // ── Role helpers ────────────────────────────────────────────
   const isSuperAdmin = user?.role === 'super_admin';
   const isAdmin = user?.role === 'owner' || isSuperAdmin;
@@ -109,6 +125,7 @@ export function useAuth() {
     loading,
     login,
     logout,
+    refresh,
     fetchWithAuth,
     isSuperAdmin,
     isAdmin,

@@ -15,7 +15,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Settings, User, ChevronDown, Shield, Building2, BriefcaseBusiness } from 'lucide-react';
+import { LogOut, User, ChevronDown, Shield, Building2, BriefcaseBusiness } from 'lucide-react';
 
 const ROLE_LABELS: Record<string, string> = {
   super_admin: 'Conta Tech',
@@ -30,7 +30,7 @@ const ROLE_COLORS: Record<string, string> = {
 };
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading, logout, isAdmin } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -143,12 +143,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <User className="size-4" />
                   Meu perfil
                 </DropdownMenuItem>
-                {isAdmin && (
-                  <DropdownMenuItem className="gap-2 cursor-pointer" onClick={() => router.push('/configuracoes')}>
-                    <Settings className="size-4" />
-                    Configurações
-                  </DropdownMenuItem>
-                )}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>

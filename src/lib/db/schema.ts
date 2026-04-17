@@ -47,6 +47,9 @@ export const usuarios = pgTable('usuarios', {
   senhaHash: text('senha_hash').notNull(),
   role: userRoleEnum('role').notNull().default('owner'),
   ativo: boolean('ativo').notNull().default(true),
+  telefone: text('telefone'),
+  whatsapp: text('whatsapp'),
+  instagram: text('instagram'),
   criadoEm: timestamp('criado_em', { withTimezone: true }).notNull().defaultNow(),
 }, (t) => [
   index('idx_usuarios_email').on(t.email),
