@@ -1,4 +1,4 @@
-# Meu Estoque
+# Meu Controle
 
 Sistema SaaS multi-tenant para pequenas lojas gerenciarem estoque, vendas e operacao.
 
