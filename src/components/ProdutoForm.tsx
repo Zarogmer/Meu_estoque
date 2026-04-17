@@ -23,6 +23,29 @@ import {
 import { toast } from 'sonner';
 import { CloudUpload, X } from 'lucide-react';
 
+// ── Currency helpers ────────────────────────────────────────────
+// Price state is kept as a string of cents (e.g. "1500" for R$ 15,00)
+// so that typing behaves like a POS input: digits fill in from the right.
+
+function formatBRL(cents: string): string {
+  const n = Number(cents || '0');
+  return (n / 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function readCents(raw: string): string {
+  const digits = raw.replace(/\D/g, '').slice(0, 10);
+  const trimmed = digits.replace(/^0+/, '');
+  return trimmed;
+}
+
+function centsToDecimal(cents: string): string {
+  const n = Number(cents || '0');
+  return (n / 100).toFixed(2);
+}
+
 interface Produto {
   id: number;
   nome: string;
@@ -84,8 +107,8 @@ export default function ProdutoForm({ open, onClose, produto, onSaved }: Produto
       setNome(produto.nome);
       setDescricao(produto.descricao ?? '');
       setCategoriaId(produto.categoriaId ? String(produto.categoriaId) : '');
-      setPrecoCusto((produto.precoCusto / 100).toFixed(2));
-      setPrecoVenda((produto.precoVenda / 100).toFixed(2));
+      setPrecoCusto(String(produto.precoCusto ?? ''));
+      setPrecoVenda(String(produto.precoVenda ?? ''));
       setQuantidade(String(produto.quantidade));
       setImagem(null);
       setImagemPreview(produto.imagemUrl);
@@ -154,8 +177,8 @@ export default function ProdutoForm({ open, onClose, produto, onSaved }: Produto
       formData.append('nome', nome.trim());
       formData.append('descricao', descricao);
       if (categoriaId) formData.append('categoriaId', categoriaId);
-      formData.append('precoCusto', precoCusto || '0');
-      formData.append('precoVenda', precoVenda || '0');
+      formData.append('precoCusto', centsToDecimal(precoCusto));
+      formData.append('precoVenda', centsToDecimal(precoVenda));
       formData.append('quantidade', quantidade || '0');
       if (imagem) formData.append('imagem', imagem);
 
@@ -243,28 +266,36 @@ export default function ProdutoForm({ open, onClose, produto, onSaved }: Produto
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="pf-custo">Preço de custo (R$)</Label>
-              <Input
-                id="pf-custo"
-                type="number"
-                step="0.01"
-                min="0"
-                value={precoCusto}
-                onChange={(event) => setPrecoCusto(event.target.value)}
-                placeholder="0,00"
-              />
+              <Label htmlFor="pf-custo">Preço de custo</Label>
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                  R$
+                </span>
+                <Input
+                  id="pf-custo"
+                  inputMode="numeric"
+                  value={formatBRL(precoCusto)}
+                  onChange={(event) => setPrecoCusto(readCents(event.target.value))}
+                  placeholder="0,00"
+                  className="pl-10 text-right tabular-nums"
+                />
+              </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="pf-venda">Preço de venda (R$)</Label>
-              <Input
-                id="pf-venda"
-                type="number"
-                step="0.01"
-                min="0"
-                value={precoVenda}
-                onChange={(event) => setPrecoVenda(event.target.value)}
-                placeholder="0,00"
-              />
+              <Label htmlFor="pf-venda">Preço de venda</Label>
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                  R$
+                </span>
+                <Input
+                  id="pf-venda"
+                  inputMode="numeric"
+                  value={formatBRL(precoVenda)}
+                  onChange={(event) => setPrecoVenda(readCents(event.target.value))}
+                  placeholder="0,00"
+                  className="pl-10 text-right tabular-nums"
+                />
+              </div>
             </div>
           </div>
 
