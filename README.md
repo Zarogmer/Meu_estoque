@@ -18,11 +18,6 @@ Sistema SaaS multi-tenant para pequenas lojas gerenciarem estoque, vendas e oper
 - O cadastro publico foi desativado.
 - Cada nova loja criada pelo painel admin ja nasce com um usuario `owner`.
 
-Conta inicial padrao:
-
-- Email: `guilherme@meuestoque.com`
-- Senha: `admin123`
-
 Esses valores podem ser alterados pelas variaveis:
 
 - `TECH_ADMIN_NAME`
