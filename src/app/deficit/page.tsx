@@ -37,6 +37,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { formatPhone } from '@/lib/format';
 
 interface Divida {
   id: number;
@@ -170,7 +171,7 @@ export default function DeficitPage() {
   function openEdit(divida: Divida) {
     setEditing(divida);
     setFNome(divida.nomeDevedor);
-    setFTelefone(divida.telefone || '');
+    setFTelefone(formatPhone(divida.telefone || ''));
     setFDescricao(divida.descricao || '');
     setFValorTotal((divida.valorTotal / 100).toFixed(2));
     setFValorPago((divida.valorPago / 100).toFixed(2));
@@ -392,7 +393,7 @@ export default function DeficitPage() {
                             {divida.telefone ? (
                               <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                                 <Smartphone className="size-3" />
-                                {divida.telefone}
+                                {formatPhone(divida.telefone)}
                               </span>
                             ) : (
                               <span className="text-muted-foreground">—</span>
@@ -465,9 +466,11 @@ export default function DeficitPage() {
                 <Label htmlFor="d-telefone">Telefone</Label>
                 <Input
                   id="d-telefone"
+                  inputMode="tel"
                   placeholder="(00) 00000-0000"
                   value={fTelefone}
-                  onChange={(event) => setFTelefone(event.target.value)}
+                  onChange={(event) => setFTelefone(formatPhone(event.target.value))}
+                  maxLength={16}
                 />
               </div>
             </div>
