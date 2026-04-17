@@ -46,8 +46,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="app-shell min-h-screen text-foreground transition-colors">
-        <div className="hidden md:fixed md:bottom-8 md:left-8 md:top-8 md:flex md:w-24 md:flex-col md:items-center rounded-[2rem] border border-border bg-card py-8 shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
-          <Skeleton className="mb-10 h-14 w-14 rounded-[1.5rem] bg-muted" />
+        <div className="hidden md:fixed md:inset-y-0 md:left-0 md:flex md:w-24 md:flex-col md:items-center border-r border-border bg-sidebar py-7">
+          <Skeleton className="mb-8 h-12 w-12 rounded-2xl bg-muted" />
           <div className="flex flex-col items-center gap-3">
             <Skeleton className="h-12 w-12 rounded-2xl bg-muted" />
             <Skeleton className="h-12 w-12 rounded-2xl bg-muted" />
@@ -55,7 +55,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <Skeleton className="h-12 w-12 rounded-2xl bg-muted" />
           </div>
         </div>
-        <div className="flex flex-1 flex-col md:pl-[152px]">
+        <div className="flex flex-1 flex-col md:pl-24">
           <div className="flex h-20 items-center gap-4 px-6 md:px-8">
             <Skeleton className="h-10 w-56 rounded-2xl bg-muted" />
           </div>
@@ -83,7 +83,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="app-shell min-h-screen text-foreground transition-colors">
       <Sidebar />
-      <div className="flex flex-1 flex-col md:pl-[152px] transition-all duration-300">
+      <div className="flex flex-1 flex-col md:pl-24 transition-all duration-300">
         <header className="sticky top-0 z-40 flex h-20 items-center gap-4 border-b border-border/80 bg-background/80 px-6 backdrop-blur-xl md:px-8">
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">

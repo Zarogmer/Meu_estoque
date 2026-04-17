@@ -274,7 +274,7 @@ export function Sidebar() {
 
   return (
     <TooltipProvider delay={0}>
-      <aside className="hidden md:fixed md:bottom-8 md:left-8 md:top-8 md:z-50 md:flex md:w-24 md:flex-col md:items-center rounded-[2rem] border border-sidebar-border bg-sidebar py-7 shadow-[0_16px_40px_rgba(15,23,42,0.08)] transition-colors">
+      <aside className="hidden md:fixed md:inset-y-0 md:left-0 md:z-50 md:flex md:w-24 md:flex-col md:items-center border-r border-sidebar-border bg-sidebar py-7 transition-colors">
         <Link
           href={homeHref}
           aria-label="Meu Controle - Início"
