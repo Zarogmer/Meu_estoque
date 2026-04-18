@@ -21,8 +21,21 @@ export const metadata: Metadata = {
     title: "Meu Controle",
   },
   icons: {
-    icon: "/icons/icon-192.png",
-    apple: "/icons/icon-192.png",
+    icon: "/mascote.png",
+    apple: "/mascote.png",
+  },
+  openGraph: {
+    title: "Meu Controle",
+    description: "Painel interno de gestão, operação e acompanhamento do negócio.",
+    images: [{ url: "/mascote.png", width: 512, height: 512, alt: "Meu Controle" }],
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary",
+    title: "Meu Controle",
+    description: "Painel interno de gestão, operação e acompanhamento do negócio.",
+    images: ["/mascote.png"],
   },
 };
 

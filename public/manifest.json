@@ -1,25 +1,25 @@
 {
   "name": "Meu Controle",
   "short_name": "MeuControle",
-  "description": "Painel interno de gestao, operacao e acompanhamento do negocio.",
+  "description": "Painel interno de gestão, operação e acompanhamento do negócio.",
   "start_url": "/dashboard",
   "display": "standalone",
-  "background_color": "#0a1628",
-  "theme_color": "#3b82f6",
+  "background_color": "#0b1020",
+  "theme_color": "#38bdf8",
   "orientation": "portrait-primary",
   "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-512.png",
+      "src": "/mascote.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/mascote.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [],
@@ -27,12 +27,12 @@
     {
       "name": "Dashboard",
       "url": "/dashboard",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/mascote.png", "sizes": "512x512" }]
     },
     {
       "name": "Controle de Produtos",
       "url": "/estoque",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/mascote.png", "sizes": "512x512" }]
     }
   ]
 }
