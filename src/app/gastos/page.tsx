@@ -523,7 +523,7 @@ export default function GastosPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="g-categoria">Categoria</Label>
-              <Select value={fCategoria} onValueChange={setFCategoria}>
+              <Select value={fCategoria} onValueChange={(v) => setFCategoria(v ?? '')}>
                 <SelectTrigger id="g-categoria">
                   <SelectValue placeholder="Escolha uma categoria" />
                 </SelectTrigger>
