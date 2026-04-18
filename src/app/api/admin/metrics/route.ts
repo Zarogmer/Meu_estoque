@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '@/lib/auth';
 import { db, lojas, usuarios } from '@/lib/db';
-import { eq, count, desc, sql } from 'drizzle-orm';
+import { eq, and, ne, count, desc, sql } from 'drizzle-orm';
 
 export async function GET() {
   try {
@@ -14,10 +14,10 @@ export async function GET() {
     const lojasAtivas = lojasAtivasResult.c;
     const lojasSuspensas = totalLojas - lojasAtivas;
 
-    const [totalUsuariosResult] = await db.select({ c: count() }).from(usuarios);
+    const [totalUsuariosResult] = await db.select({ c: count() }).from(usuarios).where(ne(usuarios.role, 'super_admin'));
     const totalUsuarios = totalUsuariosResult.c;
 
-    const [usuariosAtivosResult] = await db.select({ c: count() }).from(usuarios).where(eq(usuarios.ativo, true));
+    const [usuariosAtivosResult] = await db.select({ c: count() }).from(usuarios).where(and(eq(usuarios.ativo, true), ne(usuarios.role, 'super_admin')));
     const usuariosAtivos = usuariosAtivosResult.c;
 
     const [totalAdminsResult] = await db.select({ c: count() }).from(usuarios).where(eq(usuarios.role, 'owner'));

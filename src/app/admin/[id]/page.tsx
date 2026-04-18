@@ -128,45 +128,25 @@ export default function AdminTenantDetailPage() {
 
         {/* Info Cards */}
         <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem]">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C1B8FF]/10 text-[#C1B8FF]">
-                  <Users className="size-5" />
-                </div>
-                <div>
-                  <p className="text-3xl font-bold text-[#1A1D1F]">{usuarios.length}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Total de usuarios</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem]">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C1B8FF]/10 text-[#C1B8FF]">
-                  <ShieldCheck className="size-5" />
-                </div>
-                <div>
-                  <p className="text-3xl font-bold text-[#1A1D1F]">{admins.length}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Administradores</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem]">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                  <Calendar className="size-5" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-[#1A1D1F]">{formatDate(loja.criadoEm)}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Data de criação</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <InfoCard
+            label="Total de usuários"
+            value={usuarios.length}
+            icon={<Users className="size-5" />}
+            color="bg-[#C1B8FF]/10 text-[#C1B8FF]"
+          />
+          <InfoCard
+            label="Administradores"
+            value={admins.length}
+            icon={<ShieldCheck className="size-5" />}
+            color="bg-[#C1B8FF]/10 text-[#C1B8FF]"
+          />
+          <InfoCard
+            label="Data de criação"
+            value={formatDate(loja.criadoEm)}
+            icon={<Calendar className="size-5" />}
+            color="bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+            valueSize="text-2xl"
+          />
         </div>
 
         {/* Users Table */}
@@ -225,5 +205,29 @@ export default function AdminTenantDetailPage() {
         </Card>
       </div>
     </AppLayout>
+  );
+}
+
+function InfoCard({ label, value, icon, color, valueSize = 'text-3xl' }: {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color: string;
+  valueSize?: string;
+}) {
+  return (
+    <Card className="bg-card border border-border/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem] transition-all hover:shadow-[0_12px_40px_rgb(37,99,235,0.08)] hover:-translate-y-0.5">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+            <p className={`mt-2 ${valueSize} font-bold tracking-tight text-foreground leading-none`}>{value}</p>
+          </div>
+          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${color}`}>
+            {icon}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
