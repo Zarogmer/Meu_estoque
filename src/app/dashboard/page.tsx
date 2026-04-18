@@ -98,6 +98,9 @@ interface WidgetData {
     ano: number;
     diaAtual: number;
     diasComVenda: number[];
+    diasComDivida: number[];
+    diasComReceber: number[];
+    diasComTarefa: number[];
   };
 }
 
@@ -167,7 +170,7 @@ function ChartTooltip({ active, payload }: { active?: boolean; payload?: { value
 function CalendarWidget({ data }: { data: WidgetData['calendario'] | null }) {
   const [offset, setOffset] = useState(0);
 
-  const { days, monthName, dayToday, daysWithSales } = useMemo(() => {
+  const { days, monthName, dayToday, daysWithSales, daysWithDivida, daysWithReceber, daysWithTarefa } = useMemo(() => {
     const now = new Date();
     const target = new Date(now.getFullYear(), now.getMonth() + offset, 1);
     const month = target.getMonth();
@@ -187,6 +190,9 @@ function CalendarWidget({ data }: { data: WidgetData['calendario'] | null }) {
       monthName: `${MONTH_NAMES[month]}, ${year}`,
       dayToday: isCurrentMonth ? data.diaAtual : -1,
       daysWithSales: isCurrentMonth ? data.diasComVenda : [],
+      daysWithDivida: isCurrentMonth ? (data?.diasComDivida ?? []) : [],
+      daysWithReceber: isCurrentMonth ? (data?.diasComReceber ?? []) : [],
+      daysWithTarefa: isCurrentMonth ? (data?.diasComTarefa ?? []) : [],
     };
   }, [offset, data]);
 
@@ -222,15 +228,18 @@ function CalendarWidget({ data }: { data: WidgetData['calendario'] | null }) {
           </div>
         ))}
         {days.map((day, index) => {
-          if (!day) return <div key={index} className="h-9" />;
+          if (!day) return <div key={index} className="h-11" />;
 
           const isToday = day === dayToday;
           const hasSales = daysWithSales.includes(day);
+          const hasDivida = daysWithDivida.includes(day);
+          const hasReceber = daysWithReceber.includes(day);
+          const hasTarefa = daysWithTarefa.includes(day);
           return (
             <div
               key={index}
               className={[
-                'flex h-9 items-center justify-center rounded-xl text-xs transition-colors',
+                'relative flex h-11 flex-col items-center justify-center rounded-xl text-xs transition-colors',
                 isToday
                   ? 'bg-primary font-bold text-primary-foreground'
                   : hasSales
@@ -238,10 +247,32 @@ function CalendarWidget({ data }: { data: WidgetData['calendario'] | null }) {
                     : 'text-muted-foreground',
               ].join(' ')}
             >
-              {day}
+              <span>{day}</span>
+              {(hasDivida || hasReceber || hasTarefa) && (
+                <div className="mt-0.5 flex items-center justify-center gap-0.5">
+                  {hasDivida && <span className="size-1.5 rounded-full bg-red-500" />}
+                  {hasReceber && <span className="size-1.5 rounded-full bg-emerald-500" />}
+                  {hasTarefa && <span className="size-1.5 rounded-full bg-amber-500" />}
+                </div>
+              )}
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] font-medium text-muted-foreground">
+        <span className="flex items-center gap-1.5">
+          <span className="size-2 rounded-full bg-primary" /> Vendas
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="size-2 rounded-full bg-red-500" /> Dívidas
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="size-2 rounded-full bg-emerald-500" /> A receber
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="size-2 rounded-full bg-amber-500" /> Rotinas
+        </span>
       </div>
     </div>
   );

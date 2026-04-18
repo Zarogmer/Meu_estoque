@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAuthWithTenant } from '@/lib/auth';
-import { db, vendas } from '@/lib/db';
-import { eq, and, gte, lt, sql } from 'drizzle-orm';
+import { db, vendas, dividas, lancamentos, tarefas } from '@/lib/db';
+import { sql } from 'drizzle-orm';
 import { isDemoMode, demoWidgets } from '@/lib/demo-data';
 
 export async function GET() {
@@ -75,20 +75,67 @@ export async function GET() {
       ? Math.round(((faturamentoTotal - faturamentoAnterior) / faturamentoAnterior) * 1000) / 10
       : 0;
 
-    // Calendario -- days with sales this month
+    // Calendario -- month boundaries
     const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const monthEnd = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}-01`;
+
     const diasComVendaRows = await db
       .select({
         dia: sql<number>`EXTRACT(DAY FROM ${vendas.dataVenda}::date)::int`,
       })
       .from(vendas)
       .where(
-        sql`${vendas.lojaId} = ${lojaId} AND ${vendas.dataVenda} >= ${monthStart}`
+        sql`${vendas.lojaId} = ${lojaId} AND ${vendas.dataVenda} >= ${monthStart} AND ${vendas.dataVenda} < ${monthEnd}`
       )
-      .groupBy(sql`EXTRACT(DAY FROM ${vendas.dataVenda}::date)`)
-      .orderBy(sql`EXTRACT(DAY FROM ${vendas.dataVenda}::date)`);
-
+      .groupBy(sql`EXTRACT(DAY FROM ${vendas.dataVenda}::date)`);
     const diasComVenda = diasComVendaRows.map(d => Number(d.dia));
+
+    // Dividas — dias com vencimento neste mês (não pagas)
+    const diasComDividaRows = await db
+      .select({
+        dia: sql<number>`EXTRACT(DAY FROM ${dividas.dataVencimento}::date)::int`,
+      })
+      .from(dividas)
+      .where(
+        sql`${dividas.lojaId} = ${lojaId}
+          AND ${dividas.dataVencimento} IS NOT NULL
+          AND ${dividas.dataVencimento} >= ${monthStart}
+          AND ${dividas.dataVencimento} < ${monthEnd}
+          AND ${dividas.status} != 'pago'`
+      )
+      .groupBy(sql`EXTRACT(DAY FROM ${dividas.dataVencimento}::date)`);
+    const diasComDivida = diasComDividaRows.map(d => Number(d.dia));
+
+    // Lançamentos a receber (aguardando pagamento ou em processo)
+    const diasComReceberRows = await db
+      .select({
+        dia: sql<number>`EXTRACT(DAY FROM ${lancamentos.dataLancamento}::date)::int`,
+      })
+      .from(lancamentos)
+      .where(
+        sql`${lancamentos.lojaId} = ${lojaId}
+          AND ${lancamentos.dataLancamento} >= ${monthStart}
+          AND ${lancamentos.dataLancamento} < ${monthEnd}
+          AND ${lancamentos.status} != 'pago'`
+      )
+      .groupBy(sql`EXTRACT(DAY FROM ${lancamentos.dataLancamento}::date)`);
+    const diasComReceber = diasComReceberRows.map(d => Number(d.dia));
+
+    // Tarefas / rotinas pendentes (usa data de criação como marcador)
+    const diasComTarefaRows = await db
+      .select({
+        dia: sql<number>`EXTRACT(DAY FROM ${tarefas.criadoEm})::int`,
+      })
+      .from(tarefas)
+      .where(
+        sql`${tarefas.lojaId} = ${lojaId}
+          AND ${tarefas.status} = 'pendente'
+          AND ${tarefas.criadoEm} >= ${monthStart}::timestamp
+          AND ${tarefas.criadoEm} < ${monthEnd}::timestamp`
+      )
+      .groupBy(sql`EXTRACT(DAY FROM ${tarefas.criadoEm})`);
+    const diasComTarefa = diasComTarefaRows.map(d => Number(d.dia));
 
     return NextResponse.json({
       metaDiaria: {
@@ -108,6 +155,9 @@ export async function GET() {
         ano: now.getFullYear(),
         diaAtual: now.getDate(),
         diasComVenda,
+        diasComDivida,
+        diasComReceber,
+        diasComTarefa,
       },
     });
   } catch (error) {

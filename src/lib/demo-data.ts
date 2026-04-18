@@ -45,6 +45,9 @@ export const demoWidgets = {
     ano: new Date().getFullYear(),
     diaAtual: new Date().getDate(),
     diasComVenda: [2, 3, 5, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 25],
+    diasComDivida: [5, 12, 20],
+    diasComReceber: [3, 10, 17, 24],
+    diasComTarefa: [8, 15, 22],
   },
 };
 
