@@ -66,7 +66,7 @@ export default function AdminTenantDetailPage() {
     try {
       const res = await fetchWithAuth(`/api/admin/tenants/${id}`);
       if (!res.ok) {
-        toast.error('Loja nao encontrada');
+        toast.error('Loja não encontrada');
         router.push('/admin');
         return;
       }
@@ -162,7 +162,7 @@ export default function AdminTenantDetailPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-[#1A1D1F]">{formatDate(loja.criadoEm)}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Data de criacao</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Data de criação</p>
                 </div>
               </div>
             </CardContent>
@@ -180,7 +180,7 @@ export default function AdminTenantDetailPage() {
             {usuarios.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Users className="size-10 text-muted-foreground/30" />
-                <p className="mt-3 text-muted-foreground">Nenhum usuario cadastrado.</p>
+                <p className="mt-3 text-muted-foreground">Nenhum usuário cadastrado.</p>
               </div>
             ) : (
               <Table>

@@ -335,7 +335,7 @@ export default function DashboardPage() {
             <div className="relative z-10 max-w-2xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-card/70 py-1 pl-1 pr-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                 <Image src="/mascote.png" alt="" width={20} height={20} className="size-5 rounded-full object-cover" />
-                Visao geral
+                Visão geral
               </div>
               <p className="text-sm text-muted-foreground">{getGreeting()}, {user?.nome?.split(' ')[0] || 'gestor'}.</p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
@@ -356,7 +356,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Janela de analise
+                  Janela de análise
                 </p>
                 <p className="mt-1 text-lg font-semibold text-foreground">Período de acompanhamento</p>
               </div>
@@ -379,7 +379,7 @@ export default function DashboardPage() {
               ))}
             </div>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">
-              Use este filtro para revisar desempenho recente, movimentacoes e ritmo operacional.
+              Use este filtro para revisar desempenho recente, movimentações e ritmo operacional.
             </p>
           </div>
         </section>

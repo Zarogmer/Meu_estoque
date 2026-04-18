@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const { nomeDevedor, telefone, descricao, valorTotal, valorPago, dataCompra, dataVencimento, observacoes } = body;
 
     if (!nomeDevedor || !nomeDevedor.trim()) {
-      return NextResponse.json({ error: 'Nome do devedor e obrigatorio' }, { status: 400 });
+      return NextResponse.json({ error: 'Nome do devedor é obrigatório' }, { status: 400 });
     }
 
     if (!valorTotal || valorTotal <= 0) {

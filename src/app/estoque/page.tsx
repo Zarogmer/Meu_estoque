@@ -175,7 +175,7 @@ export default function EstoquePage() {
     try {
       const res = await fetch(`/api/produtos/${produto.id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error();
-      toast.success('Produto excluido com sucesso');
+      toast.success('Produto excluído com sucesso');
       fetchProdutos();
     } catch {
       toast.error('Erro ao excluir produto');

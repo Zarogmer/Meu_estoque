@@ -170,7 +170,7 @@ export default function AdminDashboard() {
       if (actionType === 'delete') {
         const res = await fetchWithAuth(`/api/admin/tenants/${actionLoja.id}`, { method: 'DELETE' });
         if (!res.ok) throw new Error((await res.json()).error);
-        toast.success(`Loja "${actionLoja.nome}" excluida`);
+        toast.success(`Loja "${actionLoja.nome}" excluída`);
       } else {
         const ativo = actionType === 'activate';
         const res = await fetchWithAuth(`/api/admin/tenants/${actionLoja.id}`, {

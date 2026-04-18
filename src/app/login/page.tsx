@@ -49,22 +49,22 @@ export default function LoginPage() {
           <div className="max-w-xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
               <ShieldCheck className="size-4" />
-              Painel interno para operacao e gestao
+              Painel interno para operação e gestão
             </div>
             <h1 className="text-5xl font-bold tracking-tight text-foreground">
               Meu Controle
             </h1>
             <p className="mt-4 text-xl text-muted-foreground">
-              Seu negocio na sua mao.
+              Seu negócio na sua mão.
             </p>
             <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground">
-              Acompanhe caixa, produtos, rotina da equipe e indicadores do negocio em um unico painel claro, moderno e feito para operacao real.
+              Acompanhe caixa, produtos, rotina da equipe e indicadores do negócio em um único painel claro, moderno e feito para operação real.
             </p>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              <FeatureCard title="Controle diario" description="Organize produtos, contas e movimentacoes do negocio." />
-              <FeatureCard title="Visao clara" description="Tenha leitura rapida do que exige atencao agora." />
-              <FeatureCard title="Base escalavel" description="Prepare sua operacao para crescer com mais ordem." />
+              <FeatureCard title="Controle diário" description="Organize produtos, contas e movimentações do negócio." />
+              <FeatureCard title="Visão clara" description="Tenha leitura rápida do que exige atenção agora." />
+              <FeatureCard title="Base escalável" description="Prepare sua operação para crescer com mais ordem." />
             </div>
           </div>
         </section>
@@ -87,7 +87,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="voce@empresa.com"
+                  placeholder="você@empresa.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -120,7 +120,7 @@ export default function LoginPage() {
 
             <div className="mt-6 rounded-2xl bg-accent px-4 py-3">
               <p className="text-sm text-muted-foreground">
-                Plataforma interna para acompanhar operacao, caixa, produtos e desempenho do negocio.
+                Plataforma interna para acompanhar operação, caixa, produtos e desempenho do negócio.
               </p>
             </div>
           </div>

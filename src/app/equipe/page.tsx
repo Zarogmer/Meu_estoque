@@ -121,7 +121,7 @@ export default function EquipePage() {
         throw new Error(data.error || 'Erro ao convidar usuario');
       }
 
-      toast.success('Funcionario adicionado com sucesso');
+      toast.success('Funcionário adicionado com sucesso');
       setDialogOpen(false);
       await fetchUsuarios();
     } catch (err) {
@@ -150,7 +150,7 @@ export default function EquipePage() {
         throw new Error(data.error || 'Erro ao remover usuario');
       }
 
-      toast.success('Usuario removido com sucesso');
+      toast.success('Usuário removido com sucesso');
       setDeleteDialogOpen(false);
       setDeletingUser(null);
       await fetchUsuarios();
@@ -243,7 +243,7 @@ export default function EquipePage() {
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <Users className="size-12 text-muted-foreground/30" />
                 <p className="mt-4 text-muted-foreground">
-                  Nenhum usuario encontrado.
+                  Nenhum usuário encontrado.
                 </p>
                 <Button variant="outline" className="mt-4" onClick={openInviteDialog}>
                   <UserPlus className="size-4" data-icon="inline-start" />
@@ -259,7 +259,7 @@ export default function EquipePage() {
                     <TableHead>Papel</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Desde</TableHead>
-                    <TableHead className="text-right">Acoes</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -385,7 +385,7 @@ export default function EquipePage() {
             <DialogTitle>Remover Usuario</DialogTitle>
             <DialogDescription>
               Tem certeza que deseja remover <strong>{deletingUser?.nome}</strong> da equipe?
-              Esta acao nao pode ser desfeita.
+              Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

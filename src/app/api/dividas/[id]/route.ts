@@ -20,14 +20,14 @@ export async function PUT(
       .limit(1);
 
     if (!existing) {
-      return NextResponse.json({ error: 'Divida nao encontrada' }, { status: 404 });
+      return NextResponse.json({ error: 'Dívida não encontrada' }, { status: 404 });
     }
 
     const body = await request.json();
     const { nomeDevedor, telefone, descricao, valorTotal, valorPago, dataCompra, dataVencimento, observacoes } = body;
 
     if (!nomeDevedor || !nomeDevedor.trim()) {
-      return NextResponse.json({ error: 'Nome do devedor e obrigatorio' }, { status: 400 });
+      return NextResponse.json({ error: 'Nome do devedor é obrigatório' }, { status: 400 });
     }
 
     const valorTotalCentavos = Math.round(parseFloat(valorTotal) * 100);
@@ -92,7 +92,7 @@ export async function DELETE(
       .limit(1);
 
     if (!existing) {
-      return NextResponse.json({ error: 'Divida nao encontrada' }, { status: 404 });
+      return NextResponse.json({ error: 'Dívida não encontrada' }, { status: 404 });
     }
 
     await db

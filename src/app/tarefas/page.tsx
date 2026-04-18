@@ -168,7 +168,7 @@ export default function TarefasPage() {
 
   async function handleSave() {
     if (!fTitulo.trim()) {
-      toast.error('Titulo e obrigatorio');
+      toast.error('Título é obrigatório');
       return;
     }
 
@@ -215,7 +215,7 @@ export default function TarefasPage() {
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) throw new Error();
-      toast.success(newStatus === 'concluida' ? 'Tarefa concluida!' : 'Tarefa reaberta!');
+      toast.success(newStatus === 'concluida' ? 'Tarefa concluída!' : 'Tarefa reaberta!');
       fetchTarefas();
     } catch {
       toast.error('Erro ao atualizar tarefa');
@@ -236,7 +236,7 @@ export default function TarefasPage() {
         credentials: 'include',
       });
       if (!res.ok) throw new Error();
-      toast.success('Tarefa excluida');
+      toast.success('Tarefa excluída');
       setDeleteDialogOpen(false);
       setDeletingTarefa(null);
       fetchTarefas();
@@ -290,7 +290,7 @@ export default function TarefasPage() {
               </div>
               <div>
                 <p className="text-3xl font-bold text-[#1A1D1F]">{concluidasMes}</p>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Concluidas este mes</p>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1D1F]/40">Concluídas este mês</p>
               </div>
             </CardContent>
           </Card>
@@ -424,7 +424,7 @@ export default function TarefasPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="t-descricao">Descricao</Label>
+              <Label htmlFor="t-descricao">Descrição</Label>
               <Textarea
                 id="t-descricao"
                 placeholder="Detalhes da tarefa..."

@@ -13,7 +13,7 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Meu Controle",
-  description: "Painel interno de gestao, operacao e acompanhamento do negocio.",
+  description: "Painel interno de gestão, operação e acompanhamento do negócio.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

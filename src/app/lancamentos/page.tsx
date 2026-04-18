@@ -265,12 +265,12 @@ export default function LancamentosPage() {
         credentials: 'include',
       });
       if (!res.ok) throw new Error();
-      toast.success('Lancamento excluido');
+      toast.success('Lançamento excluído');
       setDeleteDialogOpen(false);
       setDeletingLancamento(null);
       fetchLancamentos();
     } catch {
-      toast.error('Erro ao excluir lancamento');
+      toast.error('Erro ao excluir lançamento');
     } finally {
       setDeleting(false);
     }
@@ -527,7 +527,7 @@ export default function LancamentosPage() {
               <Label htmlFor="l-obs">Observação</Label>
               <Textarea
                 id="l-obs"
-                placeholder="Anotacoes extras..."
+                placeholder="Anotações extras..."
                 value={fObservacao}
                 onChange={(e) => setFObservacao(e.target.value)}
                 rows={2}

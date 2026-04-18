@@ -19,14 +19,14 @@ export async function PUT(
       .limit(1);
 
     if (!existing) {
-      return NextResponse.json({ error: 'Lancamento nao encontrado' }, { status: 404 });
+      return NextResponse.json({ error: 'Lançamento não encontrado' }, { status: 404 });
     }
 
     const body = await request.json();
     const { descricao, valor, tipo, status, dataLancamento, observacao, clienteNome } = body;
 
     if (!descricao || !descricao.trim()) {
-      return NextResponse.json({ error: 'Descricao e obrigatoria' }, { status: 400 });
+      return NextResponse.json({ error: 'Descrição é obrigatória' }, { status: 400 });
     }
 
     const valorCentavos = Math.round(parseFloat(valor) * 100);
@@ -77,7 +77,7 @@ export async function DELETE(
       .limit(1);
 
     if (!existing) {
-      return NextResponse.json({ error: 'Lancamento nao encontrado' }, { status: 404 });
+      return NextResponse.json({ error: 'Lançamento não encontrado' }, { status: 404 });
     }
 
     await db

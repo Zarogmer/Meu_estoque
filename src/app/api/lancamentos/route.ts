@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const { descricao, valor, tipo, status, dataLancamento, observacao, clienteNome } = body;
 
     if (!descricao || !descricao.trim()) {
-      return NextResponse.json({ error: 'Descricao e obrigatoria' }, { status: 400 });
+      return NextResponse.json({ error: 'Descrição é obrigatória' }, { status: 400 });
     }
 
     if (!valor || parseFloat(valor) <= 0) {

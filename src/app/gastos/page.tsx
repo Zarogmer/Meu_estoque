@@ -24,6 +24,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import {
@@ -51,7 +58,31 @@ interface Gasto {
   criadoEm: string;
 }
 
+interface Categoria {
+  id: number;
+  nome: string;
+}
+
 type TipoFiltro = 'todos' | 'pessoal' | 'empresa';
+
+// ── Currency helpers (same pattern as ProdutoForm) ──────────────
+function formatBRL(cents: string): string {
+  const n = Number(cents || '0');
+  return (n / 100).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function readCents(raw: string): string {
+  const digits = raw.replace(/\D/g, '').slice(0, 10);
+  return digits.replace(/^0+/, '');
+}
+
+function centsToDecimal(cents: string): string {
+  const n = Number(cents || '0');
+  return (n / 100).toFixed(2);
+}
 
 function formatCentavos(centavos: number): string {
   return (centavos / 100).toLocaleString('pt-BR', {
@@ -102,6 +133,7 @@ function statusBadge(status: string) {
 
 export default function GastosPage() {
   const [gastos, setGastos] = useState<Gasto[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
   const [busca, setBusca] = useState('');
   const [filtroTipo, setFiltroTipo] = useState<TipoFiltro>('todos');
@@ -113,7 +145,7 @@ export default function GastosPage() {
   const [fTipo, setFTipo] = useState<'pessoal' | 'empresa'>('empresa');
   const [fDescricao, setFDescricao] = useState('');
   const [fCategoria, setFCategoria] = useState('');
-  const [fValor, setFValor] = useState('');
+  const [fValorCents, setFValorCents] = useState(''); // stored as cents string
   const [fDataGasto, setFDataGasto] = useState('');
   const [fStatus, setFStatus] = useState<'pago' | 'pendente'>('pago');
   const [fObservacao, setFObservacao] = useState('');
@@ -144,6 +176,15 @@ export default function GastosPage() {
     fetchGastos();
   }, [fetchGastos]);
 
+  // Load categorias once (reuses the product catalog list)
+  useEffect(() => {
+    if (!dialogOpen) return;
+    fetch('/api/categorias', { credentials: 'include' })
+      .then((res) => (res.ok ? res.json() : { categorias: [] }))
+      .then((data) => setCategorias(data.categorias ?? []))
+      .catch(() => setCategorias([]));
+  }, [dialogOpen]);
+
   const totalEmpresa = gastos
     .filter((g) => g.tipo === 'empresa')
     .reduce((s, g) => s + g.valor, 0);
@@ -158,7 +199,7 @@ export default function GastosPage() {
     setFTipo('empresa');
     setFDescricao('');
     setFCategoria('');
-    setFValor('');
+    setFValorCents('');
     setFDataGasto(new Date().toISOString().split('T')[0]);
     setFStatus('pago');
     setFObservacao('');
@@ -175,7 +216,7 @@ export default function GastosPage() {
     setFTipo(g.tipo);
     setFDescricao(g.descricao);
     setFCategoria(g.categoria || '');
-    setFValor((g.valor / 100).toFixed(2));
+    setFValorCents(String(g.valor));
     setFDataGasto(g.dataGasto);
     setFStatus(g.status);
     setFObservacao(g.observacao || '');
@@ -187,7 +228,7 @@ export default function GastosPage() {
       toast.error('Descrição é obrigatória.');
       return;
     }
-    if (!fValor || parseFloat(fValor) <= 0) {
+    if (!fValorCents || Number(fValorCents) <= 0) {
       toast.error('O valor deve ser maior que zero.');
       return;
     }
@@ -198,7 +239,7 @@ export default function GastosPage() {
         tipo: fTipo,
         descricao: fDescricao,
         categoria: fCategoria,
-        valor: fValor,
+        valor: centsToDecimal(fValorCents),
         dataGasto: fDataGasto,
         status: fStatus,
         observacao: fObservacao,
@@ -377,7 +418,7 @@ export default function GastosPage() {
                         <TableCell className="hidden sm:table-cell text-muted-foreground">
                           {g.categoria || '—'}
                         </TableCell>
-                        <TableCell className="text-right font-bold">
+                        <TableCell className="text-right font-bold tabular-nums">
                           {formatCentavos(g.valor)}
                         </TableCell>
                         <TableCell className="hidden md:table-cell text-muted-foreground">
@@ -454,16 +495,20 @@ export default function GastosPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="g-valor">Valor (R$) *</Label>
-                <Input
-                  id="g-valor"
-                  type="number"
-                  step="0.01"
-                  min="0.01"
-                  placeholder="0,00"
-                  value={fValor}
-                  onChange={(e) => setFValor(e.target.value)}
-                />
+                <Label htmlFor="g-valor">Valor *</Label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                    R$
+                  </span>
+                  <Input
+                    id="g-valor"
+                    inputMode="numeric"
+                    placeholder="0,00"
+                    value={formatBRL(fValorCents)}
+                    onChange={(e) => setFValorCents(readCents(e.target.value))}
+                    className="pl-10 text-right tabular-nums"
+                  />
+                </div>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="g-data">Data</Label>
@@ -478,12 +523,24 @@ export default function GastosPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="g-categoria">Categoria</Label>
-              <Input
-                id="g-categoria"
-                placeholder="Ex: Alimentação, Moradia, Fornecedor..."
-                value={fCategoria}
-                onChange={(e) => setFCategoria(e.target.value)}
-              />
+              <Select value={fCategoria} onValueChange={setFCategoria}>
+                <SelectTrigger id="g-categoria">
+                  <SelectValue placeholder="Escolha uma categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categorias.length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      Nenhuma categoria disponível.
+                    </div>
+                  ) : (
+                    categorias.map((c) => (
+                      <SelectItem key={c.id} value={c.nome}>
+                        {c.nome}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-1.5">

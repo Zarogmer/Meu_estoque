@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
 
     if (!nomeLoja || !segmento || !nome || !email || !senha) {
       return NextResponse.json(
-        { error: 'Nome da loja, segmento, nome, email e senha sao obrigatorios' },
+        { error: 'Nome da loja, segmento, nome, email e senha são obrigatórios' },
         { status: 400 }
       );
     }
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Ja existe um usuario com este email' },
+        { error: 'Já existe um usuário com este email' },
         { status: 400 }
       );
     }
